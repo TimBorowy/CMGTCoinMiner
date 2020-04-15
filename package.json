@@ -1,0 +1,16 @@
+{
+  "name": "bc-functional-programming",
+  "version": "1.0.0",
+  "description": "cmgt coin miner",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "node app.js"
+  },
+  "author": "Tim Borowy",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "mocha": "^7.1.1"
+  }
+}
