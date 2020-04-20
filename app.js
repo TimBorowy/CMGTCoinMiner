@@ -1,30 +1,31 @@
 const cmgtCoin = require("./cmgtCoin")
 const axios = require("axios")
-const { PerformanceObserver, performance } = require('perf_hooks');
+const { performance } = require('perf_hooks');
 
 async function mineCoin() {
 
   const nextBlock = await cmgtCoin.getNextBlock()
 
+  console.log("Got block data from API. Start mining now...")
+
+  if(!nextBlock.open){
+    console.log(`blockchain is pending. Try again in ${nextBlock.countdown / 1000} seconds`)
+    console.log(nextBlock)
+    return
+  }
+
   performance.mark('Start mining');
 
   const blockString = cmgtCoin.createBlockString(nextBlock);
   const mod10 = cmgtCoin.Mod10(blockString)
-
-  let newBlockString = mod10
-
-  newBlockString += nextBlock.transactions[0].from
-  newBlockString += nextBlock.transactions[0].to
-  newBlockString += nextBlock.transactions[0].amount
-  newBlockString += nextBlock.transactions[0].timestamp
-  newBlockString += nextBlock.timestamp
+  const transactionString = cmgtCoin.createTransactionString(nextBlock, mod10)
 
   let nonce = 0
   let hash = ""
 
-  while (!cmgtCoin.testHash(hash)) {
+  while (!hash.startsWith("0000")) {
     nonce++
-    hash = cmgtCoin.Mod10(newBlockString + nonce)
+    hash = cmgtCoin.Mod10(transactionString + nonce)
   }
 
   console.log("Nonce", nonce)

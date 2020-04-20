@@ -22,7 +22,18 @@ exports.createBlockString = (nextBlock) => {
   blockString += nextBlock.blockchain.timestamp
   blockString += nextBlock.blockchain.nonce
   return blockString
+}
 
+exports.createTransactionString = (apiData, hash) => {
+  let transaction = hash
+
+  transaction += apiData.transactions[0].from
+  transaction += apiData.transactions[0].to
+  transaction += apiData.transactions[0].amount
+  transaction += apiData.transactions[0].timestamp
+  transaction += apiData.timestamp
+
+  return transaction
 }
 
 Object.defineProperty(Array.prototype, 'chunk', {
@@ -36,9 +47,13 @@ Object.defineProperty(Array.prototype, 'chunk', {
 
 exports.makeChunks = (numberArray) => {
   // Fill-up array to multiple of 10
-  let amount = 10 - numberArray.length % 10
-  for (let i = 0; i < amount; i++) {
-    numberArray.push(i)
+  let filAmount = 10 - numberArray.length % 10
+  
+  // when array is not a multiple of 10, fill up untill it is
+  if(filAmount != 10){
+    for (let i = 0; i < filAmount; i++) {
+      numberArray.push(i)
+    }
   }
 
   // Return multidimensional array in chunks of 10
@@ -81,13 +96,9 @@ exports.Mod10 = (blockString) => {
   // Convert string to ASCII string. Then split chars into array and pase chars to integer
   const numberArray = this.toAsciiString(blockString).split("").map(char => parseInt(char))
 
-  const blocks = this.makeChunks(numberArray)
-  const sumOfChunks = this.sumChucks(blocks).join("")
+  const chunks = this.makeChunks(numberArray)
+  const sumOfChunks = this.sumChucks(chunks).join("")
 
   return crypto.createHash('sha256').update(sumOfChunks).digest("hex")
 
-}
-
-exports.testHash = (hash) => {
-  return hash.substr(0, 4) == "0000"
 }
