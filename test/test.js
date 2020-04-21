@@ -79,7 +79,7 @@ describe("CMGT Coin", function () {
     })
   })
 
-  describe("#sumShunks()", () => {
+  describe("#sumChunks()", () => {
     it("Should take an array and sum all the chunks", () => {
       const chunkedArray =  [ [ 1, 0, 4, 1, 0, 1, 1, 0, 8, 1 ],
       [ 0, 8, 1, 1, 1, 9, 0, 2, 1, 0 ],
@@ -87,6 +87,18 @@ describe("CMGT Coin", function () {
       const correctArray = [ 1, 9, 7, 5, 5, 5, 7, 9, 7, 0 ];
 
       assert.deepEqual(cmgtCoin.sumChucks(chunkedArray), correctArray)
+    })
+  })
+
+  describe("#countArrays()", () => {
+    it("Should take two arrays and sum them", () => {
+      const chunkedArray =  [
+        [ 1, 0, 4, 1, 0, 1, 1, 0, 8, 1 ],
+        [ 0, 8, 1, 1, 1, 9, 0, 2, 1, 0 ]
+      ]
+      const correctArray = [ 1, 8, 5, 2, 1, 0, 1, 2, 9, 1 ];
+
+      assert.deepEqual(cmgtCoin.countArrays(chunkedArray[0], chunkedArray[1], 0), correctArray)
     })
   })
 

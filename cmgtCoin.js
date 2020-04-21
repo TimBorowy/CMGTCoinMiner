@@ -83,13 +83,24 @@ exports.sumChucks = (chunks) => {
     return chunks[0]
   }
 
-  for (let i = 0; i <= 9; i++) {
-    // Add next chunk to current chunk
-    chunks[0][i] = (chunks[0][i] + chunks[1][i]) % 10
-  }
+  chunks[0] = this.countArrays(chunks[0], chunks[1], 0)
+
+
   // Remove next chunk from list
   chunks.splice(1, 1)
   return this.sumChucks(chunks)
+}
+
+exports.countArrays = (first, second, counter) => {
+
+  if(counter >= first.length){
+    return first
+  }
+
+  first[counter] = (first[counter] + second[counter]) % 10
+
+  counter++
+  return this.countArrays(first, second, counter)
 }
 
 exports.Mod10 = (blockString) => {
